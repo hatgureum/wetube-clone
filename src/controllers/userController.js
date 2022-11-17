@@ -30,7 +30,6 @@ export const postJoin = async (req, res) => {
   });
   return res.redirect("/login");
 };
-export const edit = (req, res) => res.send("Edit user");
 
 export const getLogin = (req, res) => {
   return res.render("login", { pageTitle: "Login" });
@@ -138,4 +137,71 @@ export const logout = (req, res) => {
   req.session.destroy();
   return res.redirect("/");
 };
+export const getEdit = (req, res) => {
+  res.render("edit-profile", { pageTitle: "Edit profile" });
+};
+
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, email, username, location },
+  } = req;
+
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      email,
+      username,
+      location,
+    },
+    { new: true }
+  );
+
+  req.session.loggedInUser = updatedUser;
+
+  return res.render("edit-profile");
+};
+
+export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly === true) {
+    return res.redirect("/");
+  }
+  return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+export const postChangePassword = async (req, res) => {
+  // send notification
+  const {
+    session: {
+      user: { _id, password },
+    },
+    body: { oldPassword, newPassword, newPassword2 },
+  } = req;
+
+  const match = await bcrypt.compare(oldPassword, password);
+  if (!match) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errmsg: "password incorrect",
+    });
+  }
+
+  if (newPassword !== newPassword2) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errmsg: "Password confirmation error",
+    });
+  }
+
+  const user = await User.findById(_id);
+  user.password = newPassword;
+  console.log(user.password);
+  await user.save();
+  req.session.user.password = user.password;
+  console.log(user.password);
+  return res.redirect("/users/logout");
+};
+
 export const see = (req, res) => res.send("See");
