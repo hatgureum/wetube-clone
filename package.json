@@ -7,7 +7,8 @@
     "url": "git+https://github.com/hatgureum/wetube-clone.git"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/init.js"
+    "dev": "nodemon --exec babel-node src/init.js",
+    "assets": "webpack --config webpack.config.js"
   },
   "author": "Sangwook Lee<hatgureum@gmail.com>",
   "license": "MIT",
@@ -31,6 +32,10 @@
     "@babel/core": "^7.19.6",
     "@babel/node": "^7.20.0",
     "@babel/preset-env": "^7.19.4",
-    "nodemon": "^2.0.20"
+    "babel-loader": "^9.1.0",
+    "bable-loader": "^0.0.1-security",
+    "nodemon": "^2.0.20",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0"
   }
 }
