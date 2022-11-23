@@ -10,6 +10,7 @@ const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
 
 let controlsTimeout = null;
+let controlsMoveTimeout = null;
 let volumeValue = 0.5;
 video.volume = volumeValue;
 
@@ -77,18 +78,23 @@ const handleFullScreen = () => {
   }
 };
 
+const hideControls = () => videoControls.classList.remove("showing");
+
 const handleMouseMove = () => {
   if (controlsTimeout) {
     clearTimeout(controlsTimeout);
     controlsTimeout = null;
   }
+  if (controlsMoveTimeout) {
+    clearTimeout(controlsMoveTimeout);
+    controlsMoveTimeout = null;
+  }
   videoControls.classList.add("showing");
+  controlsMoveTimeout = setTimeout(hideControls, 2000);
 };
 
 const handleMouseLeave = () => {
-  controlsTimeout = setTimeout(() => {
-    videoControls.classList.remove("showing");
-  }, 2000);
+  controlsTimeout = setTimeout(hideControls, 2000);
 };
 
 playBtn.addEventListener("click", handlePlayClick);
