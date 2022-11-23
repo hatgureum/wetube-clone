@@ -1,11 +1,14 @@
 extends base
 
-block content 
-    if errmsg 
-        span=errmsg
+
+block content
+    if errorMessage
+        span=errorMessage
     form(method="POST")
-        input(name="username", placeholder="username", type="text", required)
-        input(name="password", placeholder="Password", type="password", required)
+        input(placeholder="Username", name="username", type="text", required)
+        input(placeholder="Password", name="password", type="password", required)
         input(type="submit", value="Login")
-        br
-        a(href="/users/github/start") Continue to Github
+        include partials/social-login
+    div.auth-switch
+        span Don't have an account? 
+        a(href="/join") Create one now &rarr;
