@@ -1,5 +1,5 @@
 const startBtn = document.getElementById("startBtn");
-const preview = document.getElementById("preview");
+const video = document.getElementById("preview");
 
 let stream = null;
 let recorder;
