@@ -2,11 +2,14 @@ const startBtn = document.getElementById("startBtn");
 const preview = document.getElementById("preview");
 
 let stream = null;
+let recorder;
 
 const handleStop = () => {
   startBtn.innerText = "Start Recording";
   startBtn.removeEventListener("click", handleStop);
   startBtn.addEventListener("click", handleStart);
+
+  recorder.stop();
 };
 
 const handleStart = () => {
@@ -14,12 +17,15 @@ const handleStart = () => {
   startBtn.removeEventListener("click", handleStart);
   startBtn.addEventListener("click", handleStop);
 
-  const recorder = new MediaRecorder(stream);
-  recorder.ondataavailable = (event) => console.log(event);
+  recorder = new MediaRecorder(stream);
+  recorder.ondataavailable = (event) => {
+    const videoFile = URL.createObjectURL(event.data);
+    video.srcObject = null;
+    video.src = videoFile;
+    video.loop = true;
+    video.play();
+  };
   recorder.start();
-  setTimeout(() => {
-    recorder.stop();
-  }, 5000);
 };
 
 const init = async () => {
