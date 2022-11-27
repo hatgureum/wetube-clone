@@ -50,7 +50,7 @@ const handleDownload = async () => {
   const thumbBlob = new Blob([thumbFile.buffer], { type: "image/jpg" });
 
   const mp4Url = URL.createObjectURL(mp4Blob);
-  const thumbUrl = URL.createObjectURL(thumbUrl);
+  const thumbUrl = URL.createObjectURL(thumbBlob);
 
   downloadFile(mp4Url, "myRecording.mp4");
   downloadFile(thumbUrl, "myThumbnail.jpg");
