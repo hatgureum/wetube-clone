@@ -9,7 +9,7 @@ import {
   postJoin,
   getLogin,
   postLogin,
-} from "../controllers/UserController";
+} from "../controllers/userController";
 import { publicOnlyMiddleware } from "../middlewares";
 
 const rootRouter = express.Router();
